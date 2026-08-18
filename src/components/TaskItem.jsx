@@ -5,23 +5,32 @@ function TaskItem({
   onSelect,
   onDelete,
 }) {
+  const checkboxId = `select-${task.id}`;
+
   return (
-    <article className={`task-card ${task.completed ? "completed" : ""}`}>
+    <article
+      className={`task-card ${task.completed ? "completed" : ""}`}
+    >
       <div className="task-check">
         <input
-          id={`select-${task.id}`}
+          id={checkboxId}
           type="checkbox"
           checked={selected}
           onChange={() => onSelect(task.id)}
-          aria-label={`Select ${task.title}`}
         />
+
+        <label htmlFor={checkboxId} className="sr-only">
+          Select {task.title}
+        </label>
       </div>
 
       <div className="task-main">
         <div className="task-title-row">
           <h3>{task.title}</h3>
 
-          <span className={`category category-${task.category.toLowerCase()}`}>
+          <span
+            className={`category category-${task.category.toLowerCase()}`}
+          >
             {task.category}
           </span>
         </div>
