@@ -8,9 +8,12 @@ function TaskItem({
   const checkboxId = `select-${task.id}`;
 
   return (
-    <article
-      className={`task-card ${task.completed ? "completed" : ""}`}
-    >
+   <article
+  className={`task-card ${task.completed ? "completed" : ""}`}
+  aria-label={`${task.title} - ${
+    task.completed ? "completed" : "pending"
+  }`}
+>
       <div className="task-check">
         <input
           id={checkboxId}
