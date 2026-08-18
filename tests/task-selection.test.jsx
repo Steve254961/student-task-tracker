@@ -32,11 +32,8 @@ describe("Student Task Tracker", () => {
 
     expect(checkbox).toBeChecked();
 
-    expect(
-      screen.getByText("1", {
-        selector: "strong",
-      })
-    ).toBeInTheDocument();
+    const selectedLabel = screen.getByText("Selected");
+expect(selectedLabel.nextElementSibling).toHaveTextContent("1");
   });
 
   test("filters tasks using the search field", async () => {
