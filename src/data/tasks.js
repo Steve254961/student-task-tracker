@@ -1,0 +1,42 @@
+export const initialTasks = [
+  {
+    id: 1,
+    title: "Complete networking assignment",
+    description: "Review the OSI model and prepare the assignment.",
+    category: "Networking",
+    dueDate: "2026-08-20",
+    completed: false,
+  },
+  {
+    id: 2,
+    title: "Build React dashboard",
+    description: "Create the dashboard interface for the project.",
+    category: "Programming",
+    dueDate: "2026-08-22",
+    completed: false,
+  },
+  {
+    id: 3,
+    title: "Database practical",
+    description: "Complete SQL queries and normalization exercises.",
+    category: "Database",
+    dueDate: "2026-08-19",
+    completed: true,
+  },
+  {
+    id: 4,
+    title: "Design project presentation",
+    description: "Prepare slides for the final project presentation.",
+    category: "Design",
+    dueDate: "2026-08-25",
+    completed: false,
+  },
+  {
+    id: 5,
+    title: "Study JavaScript",
+    description: "Review arrays, objects, functions, and React state.",
+    category: "Programming",
+    dueDate: "2026-08-23",
+    completed: false,
+  },
+];
