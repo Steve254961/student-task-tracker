@@ -20,7 +20,10 @@ function TaskList({
   }
 
   return (
-    <div className="task-list">
+    <section
+      className="task-list"
+      aria-label="Student tasks"
+    >
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
@@ -31,7 +34,7 @@ function TaskList({
           onDelete={onDelete}
         />
       ))}
-    </div>
+    </section>
   );
 }
 
