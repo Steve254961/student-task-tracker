@@ -105,3 +105,18 @@ test("filters tasks by category", async () => {
   ).not.toBeInTheDocument();
 });
 
+
+test("shows an empty state when no tasks match", async () => {
+  render(<App />);
+
+  const searchInput = screen.getByLabelText("Search tasks");
+
+  await userEvent.type(
+    searchInput,
+    "task-that-does-not-exist"
+  );
+
+  expect(
+    screen.getByText("No tasks found")
+  ).toBeInTheDocument();
+});
