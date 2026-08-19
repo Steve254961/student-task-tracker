@@ -55,12 +55,16 @@ function App() {
   }
 
   function addTask(newTask) {
+    const task = {
+      ...newTask,
+      id: `${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}`,
+      completed: false,
+    };
+
     setTasks((currentTasks) => [
-      {
-        ...newTask,
-        id: Date.now(),
-        completed: false,
-      },
+      task,
       ...currentTasks,
     ]);
 
@@ -125,22 +129,30 @@ function App() {
           aria-label="Task statistics"
         >
           <article className="stat-card">
-            <span className="stat-label">Total Tasks</span>
+            <span className="stat-label">
+              Total Tasks
+            </span>
             <strong>{tasks.length}</strong>
           </article>
 
           <article className="stat-card">
-            <span className="stat-label">Completed</span>
+            <span className="stat-label">
+              Completed
+            </span>
             <strong>{completedTasks}</strong>
           </article>
 
           <article className="stat-card">
-            <span className="stat-label">Pending</span>
+            <span className="stat-label">
+              Pending
+            </span>
             <strong>{pendingTasks}</strong>
           </article>
 
           <article className="stat-card">
-            <span className="stat-label">Selected</span>
+            <span className="stat-label">
+              Selected
+            </span>
             <strong>{selectedTasks.length}</strong>
           </article>
         </section>
@@ -152,7 +164,10 @@ function App() {
 
               <p aria-live="polite">
                 {filteredTasks.length} task
-                {filteredTasks.length !== 1 ? "s" : ""} displayed
+                {filteredTasks.length !== 1
+                  ? "s"
+                  : ""}{" "}
+                displayed
               </p>
             </div>
 
@@ -198,15 +213,19 @@ function App() {
                 <option value="All">
                   All categories
                 </option>
+
                 <option value="Networking">
                   Networking
                 </option>
+
                 <option value="Programming">
                   Programming
                 </option>
+
                 <option value="Database">
                   Database
                 </option>
+
                 <option value="Design">
                   Design
                 </option>
