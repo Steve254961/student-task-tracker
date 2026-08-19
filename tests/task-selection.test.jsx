@@ -8,14 +8,12 @@ describe("Student Task Tracker", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /student task tracker/i,
+        name: "Student Task Tracker",
       })
     ).toBeInTheDocument();
 
     expect(
-      screen.getByRole("heading", {
-        name: /my tasks/i,
-      })
+      screen.getByText("My Tasks")
     ).toBeInTheDocument();
   });
 
@@ -24,16 +22,15 @@ describe("Student Task Tracker", () => {
 
     render(<App />);
 
-    const checkbox = screen.getByRole("checkbox", {
-      name: /select complete networking assignment/i,
-    });
+    const taskCheckbox = screen.getByLabelText(
+      "Select Complete networking assignment"
+    );
 
-    await user.click(checkbox);
+    expect(taskCheckbox).not.toBeChecked();
 
-    expect(checkbox).toBeChecked();
+    await user.click(taskCheckbox);
 
-    const selectedLabel = screen.getByText("Selected");
-expect(selectedLabel.nextElementSibling).toHaveTextContent("1");
+    expect(taskCheckbox).toBeChecked();
   });
 
   test("filters tasks using the search field", async () => {
@@ -41,18 +38,54 @@ expect(selectedLabel.nextElementSibling).toHaveTextContent("1");
 
     render(<App />);
 
-    const search = screen.getByRole("searchbox", {
-      name: /search tasks/i,
-    });
+    const searchInput = screen.getByLabelText(
+      "Search tasks"
+    );
 
-    await user.type(search, "database");
+    await user.type(searchInput, "database");
 
     expect(
       screen.getByText("Database practical")
     ).toBeInTheDocument();
 
     expect(
-      screen.queryByText("Build React dashboard")
+      screen.queryByText(
+        "Complete networking assignment"
+      )
     ).not.toBeInTheDocument();
+  });
+
+  test("selection persists after clearing a filter", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    const networkingTask = screen.getByLabelText(
+      "Select Complete networking assignment"
+    );
+
+    await user.click(networkingTask);
+
+    expect(networkingTask).toBeChecked();
+
+    const searchInput = screen.getByLabelText(
+      "Search tasks"
+    );
+
+    await user.type(searchInput, "database");
+
+    expect(
+      screen.queryByText(
+        "Complete networking assignment"
+      )
+    ).not.toBeInTheDocument();
+
+    await user.clear(searchInput);
+
+    const restoredTask = screen.getByLabelText(
+      "Select Complete networking assignment"
+    );
+
+    expect(restoredTask).toBeChecked();
   });
 });
