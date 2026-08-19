@@ -53,10 +53,7 @@ function App() {
     setTasks((currentTasks) =>
       currentTasks.map((task) =>
         task.id === taskId
-          ? {
-              ...task,
-              completed: !task.completed,
-            }
+          ? { ...task, completed: !task.completed }
           : task
       )
     );
@@ -226,12 +223,16 @@ function App() {
           </div>
 
           <div className="filters">
-            <label className="search-wrapper">
+            <label
+              className="search-wrapper"
+              htmlFor="task-search"
+            >
               <span className="sr-only">
                 Search tasks
               </span>
 
               <input
+                id="task-search"
                 type="search"
                 placeholder="Search tasks..."
                 value={search}
