@@ -5,12 +5,9 @@ function TaskItem({
   onSelect,
   onDelete,
 }) {
-  const statusLabel = task.completed ? "Completed" : "Pending";
-
   return (
     <article
       className={`task-card ${task.completed ? "completed" : ""}`}
-      aria-label={`${task.title} - ${statusLabel}`}
     >
       <div className="task-check">
         <input
@@ -38,19 +35,18 @@ function TaskItem({
         <div className="task-meta">
           <span>Due: {task.dueDate}</span>
 
-          <span
-            className="task-status"
-            aria-label={`Status: ${statusLabel}`}
-          >
-            {task.completed ? "Completed" : "Pending"}
-          </span>
+          {task.completed && (
+            <span
+              className="completed-label"
+              role="status"
+            >
+              Completed
+            </span>
+          )}
         </div>
       </div>
 
-      <div
-        className="task-actions"
-        aria-label={`Actions for ${task.title}`}
-      >
+      <div className="task-actions">
         <button
           type="button"
           className="complete-button"
