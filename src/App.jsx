@@ -85,7 +85,6 @@ function App() {
       )
     );
 
-    // Remove the deleted task from the selection.
     setSelectedTasks((currentSelected) =>
       currentSelected.filter(
         (id) => id !== taskId
@@ -94,19 +93,21 @@ function App() {
   }
 
   function clearCompleted() {
-    const completedIds = tasks
-      .filter((task) => task.completed)
-      .map((task) => task.id);
+    const completedIds = new Set(
+      tasks
+        .filter((task) => task.completed)
+        .map((task) => task.id)
+    );
 
     setTasks((currentTasks) =>
       currentTasks.filter(
-        (task) => !task.completed
+        (task) => !completedIds.has(task.id)
       )
     );
 
     setSelectedTasks((currentSelected) =>
       currentSelected.filter(
-        (id) => !completedIds.includes(id)
+        (id) => !completedIds.has(id)
       )
     );
   }
