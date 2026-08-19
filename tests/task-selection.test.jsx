@@ -13,7 +13,7 @@ describe("Student Task Tracker", () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText("My Tasks")
+      screen.getByRole("heading", { name: "My Tasks" })
     ).toBeInTheDocument();
   });
 
@@ -89,3 +89,19 @@ describe("Student Task Tracker", () => {
     expect(restoredTask).toBeChecked();
   });
 });
+test("filters tasks by category", async () => {
+  render(<App />);
+
+  const categoryFilter = screen.getByLabelText(
+    "Filter tasks by category"
+  );
+
+  await userEvent.selectOptions(categoryFilter, "Database");
+
+  expect(screen.getByText("Database practical")).toBeInTheDocument();
+
+  expect(
+    screen.queryByText("Complete networking assignment")
+  ).not.toBeInTheDocument();
+});
+
