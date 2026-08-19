@@ -30,7 +30,9 @@ function TaskItem({
           </span>
         </div>
 
-        <p>{task.description}</p>
+        <p className="task-description">
+          {task.description}
+        </p>
 
         <div className="task-meta">
           <span>Due: {task.dueDate}</span>
