@@ -161,8 +161,15 @@ function App() {
 
         <section
           className="stats-grid"
-          aria-label="Task statistics"
+          aria-labelledby="task-statistics-heading"
         >
+          <h2
+            id="task-statistics-heading"
+            className="sr-only"
+          >
+            Task statistics
+          </h2>
+
           <article
             className="stat-card"
             aria-label={`Total tasks: ${statistics.total}`}
