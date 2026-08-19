@@ -40,18 +40,25 @@ function App() {
     setTasks((currentTasks) =>
       currentTasks.map((task) =>
         task.id === taskId
-          ? { ...task, completed: !task.completed }
+          ? {
+              ...task,
+              completed: !task.completed,
+            }
           : task
       )
     );
   }
 
   function toggleSelection(taskId) {
-    setSelectedTasks((currentSelected) =>
-      currentSelected.includes(taskId)
-        ? currentSelected.filter((id) => id !== taskId)
-        : [...currentSelected, taskId]
-    );
+    setSelectedTasks((currentSelected) => {
+      if (currentSelected.includes(taskId)) {
+        return currentSelected.filter(
+          (id) => id !== taskId
+        );
+      }
+
+      return [...currentSelected, taskId];
+    });
   }
 
   function addTask(newTask) {
@@ -73,11 +80,16 @@ function App() {
 
   function deleteTask(taskId) {
     setTasks((currentTasks) =>
-      currentTasks.filter((task) => task.id !== taskId)
+      currentTasks.filter(
+        (task) => task.id !== taskId
+      )
     );
 
+    // Remove the deleted task from the selection.
     setSelectedTasks((currentSelected) =>
-      currentSelected.filter((id) => id !== taskId)
+      currentSelected.filter(
+        (id) => id !== taskId
+      )
     );
   }
 
@@ -87,7 +99,9 @@ function App() {
       .map((task) => task.id);
 
     setTasks((currentTasks) =>
-      currentTasks.filter((task) => !task.completed)
+      currentTasks.filter(
+        (task) => !task.completed
+      )
     );
 
     setSelectedTasks((currentSelected) =>
@@ -106,12 +120,15 @@ function App() {
 
         <section className="welcome-section">
           <div>
-            <p className="eyebrow">STUDENT WORKSPACE</p>
+            <p className="eyebrow">
+              STUDENT WORKSPACE
+            </p>
 
             <h1>Student Task Tracker</h1>
 
             <p className="welcome-text">
-              Organize your assignments, projects, and study activities.
+              Organize your assignments, projects,
+              and study activities.
             </p>
           </div>
 
