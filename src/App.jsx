@@ -15,9 +15,11 @@ function App() {
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
+      const normalizedSearch = search.toLowerCase();
+
       const matchesSearch =
-        task.title.toLowerCase().includes(search.toLowerCase()) ||
-        task.description.toLowerCase().includes(search.toLowerCase());
+        task.title.toLowerCase().includes(normalizedSearch) ||
+        task.description.toLowerCase().includes(normalizedSearch);
 
       const matchesCategory =
         category === "All" || task.category === category;
@@ -94,7 +96,9 @@ function App() {
         <section className="welcome-section">
           <div>
             <p className="eyebrow">STUDENT WORKSPACE</p>
+
             <h1>Student Task Tracker</h1>
+
             <p className="welcome-text">
               Organize your assignments, projects, and study activities.
             </p>
@@ -109,33 +113,49 @@ function App() {
           </button>
         </section>
 
-        <section className="stats-grid" aria-label="Task statistics">
-          <article className="stat-card">
+        <section
+          className="stats-grid"
+          aria-label="Task statistics"
+        >
+          <article
+            className="stat-card"
+            aria-label={`Total tasks: ${tasks.length}`}
+          >
             <span className="stat-label">Total Tasks</span>
             <strong>{tasks.length}</strong>
           </article>
 
-          <article className="stat-card">
+          <article
+            className="stat-card"
+            aria-label={`Completed tasks: ${completedTasks}`}
+          >
             <span className="stat-label">Completed</span>
             <strong>{completedTasks}</strong>
           </article>
 
-          <article className="stat-card">
+          <article
+            className="stat-card"
+            aria-label={`Pending tasks: ${pendingTasks}`}
+          >
             <span className="stat-label">Pending</span>
             <strong>{pendingTasks}</strong>
           </article>
 
-          <article className="stat-card">
+          <article
+            className="stat-card"
+            aria-label={`Selected tasks: ${selectedTasks.length}`}
+          >
             <span className="stat-label">Selected</span>
             <strong>{selectedTasks.length}</strong>
           </article>
         </section>
 
-        <section className="tasks-section">
+        <section className="tasks-section" aria-label="Task management">
           <div className="section-header">
             <div>
               <h2>My Tasks</h2>
-              <p>
+
+              <p aria-live="polite">
                 {filteredTasks.length} task
                 {filteredTasks.length !== 1 ? "s" : ""} displayed
               </p>
@@ -154,19 +174,25 @@ function App() {
           <div className="filters">
             <label className="search-wrapper">
               <span className="sr-only">Search tasks</span>
+
               <input
                 type="search"
                 placeholder="Search tasks..."
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
+                aria-label="Search tasks"
               />
             </label>
 
             <label>
-              <span className="sr-only">Filter by category</span>
+              <span className="sr-only">
+                Filter by category
+              </span>
+
               <select
                 value={category}
                 onChange={(event) => setCategory(event.target.value)}
+                aria-label="Filter tasks by category"
               >
                 <option value="All">All categories</option>
                 <option value="Networking">Networking</option>
