@@ -23,7 +23,8 @@ function App() {
         task.description.toLowerCase().includes(normalizedSearch);
 
       const matchesCategory =
-        category === "All" || task.category === category;
+        category === "All" ||
+        task.category.toLowerCase() === category.toLowerCase();
 
       return matchesSearch && matchesCategory;
     });
