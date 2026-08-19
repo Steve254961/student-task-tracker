@@ -6,6 +6,14 @@ import TaskList from "./components/TaskList";
 import { initialTasks } from "./data/tasks";
 import "./App.css";
 
+const CATEGORY_OPTIONS = [
+  "All",
+  "Networking",
+  "Programming",
+  "Database",
+  "Design",
+];
+
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [search, setSearch] = useState("");
@@ -13,9 +21,9 @@ function App() {
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  const filteredTasks = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
+  const normalizedSearch = search.trim().toLowerCase();
 
+  const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       const matchesSearch =
         normalizedSearch === "" ||
@@ -28,13 +36,18 @@ function App() {
 
       return matchesSearch && matchesCategory;
     });
-  }, [tasks, search, category]);
+  }, [tasks, normalizedSearch, category]);
 
-  const completedTasks = tasks.filter(
-    (task) => task.completed
-  ).length;
+  const statistics = useMemo(() => {
+    const completed = tasks.filter((task) => task.completed).length;
 
-  const pendingTasks = tasks.length - completedTasks;
+    return {
+      total: tasks.length,
+      completed,
+      pending: tasks.length - completed,
+      selected: selectedTasks.length,
+    };
+  }, [tasks, selectedTasks]);
 
   function toggleTask(taskId) {
     setTasks((currentTasks) =>
@@ -52,9 +65,7 @@ function App() {
   function toggleSelection(taskId) {
     setSelectedTasks((currentSelected) => {
       if (currentSelected.includes(taskId)) {
-        return currentSelected.filter(
-          (id) => id !== taskId
-        );
+        return currentSelected.filter((id) => id !== taskId);
       }
 
       return [...currentSelected, taskId];
@@ -64,31 +75,21 @@ function App() {
   function addTask(newTask) {
     const task = {
       ...newTask,
-      id: `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2, 8)}`,
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       completed: false,
     };
 
-    setTasks((currentTasks) => [
-      task,
-      ...currentTasks,
-    ]);
-
+    setTasks((currentTasks) => [task, ...currentTasks]);
     setShowForm(false);
   }
 
   function deleteTask(taskId) {
     setTasks((currentTasks) =>
-      currentTasks.filter(
-        (task) => task.id !== taskId
-      )
+      currentTasks.filter((task) => task.id !== taskId)
     );
 
     setSelectedTasks((currentSelected) =>
-      currentSelected.filter(
-        (id) => id !== taskId
-      )
+      currentSelected.filter((id) => id !== taskId)
     );
   }
 
@@ -100,17 +101,17 @@ function App() {
     );
 
     setTasks((currentTasks) =>
-      currentTasks.filter(
-        (task) => !completedIds.has(task.id)
-      )
+      currentTasks.filter((task) => !completedIds.has(task.id))
     );
 
     setSelectedTasks((currentSelected) =>
-      currentSelected.filter(
-        (id) => !completedIds.has(id)
-      )
+      currentSelected.filter((id) => !completedIds.has(id))
     );
   }
+
+  const taskCountMessage =
+    `${filteredTasks.length} task` +
+    `${filteredTasks.length !== 1 ? "s" : ""} displayed`;
 
   return (
     <div className="app">
@@ -119,17 +120,20 @@ function App() {
       <main className="main-content">
         <Header />
 
-        <section className="welcome-section">
+        <section
+          className="welcome-section"
+          aria-labelledby="dashboard-title"
+        >
           <div>
-            <p className="eyebrow">
-              STUDENT WORKSPACE
-            </p>
+            <p className="eyebrow">STUDENT WORKSPACE</p>
 
-            <h1>Student Task Tracker</h1>
+            <h1 id="dashboard-title">
+              Student Task Tracker
+            </h1>
 
             <p className="welcome-text">
-              Organize your assignments, projects,
-              and study activities.
+              Organize your assignments, projects, and study
+              activities.
             </p>
           </div>
 
@@ -137,6 +141,8 @@ function App() {
             className="primary-button"
             type="button"
             onClick={() => setShowForm(true)}
+            aria-haspopup="dialog"
+            aria-expanded={showForm}
           >
             + Add Task
           </button>
@@ -146,46 +152,61 @@ function App() {
           className="stats-grid"
           aria-label="Task statistics"
         >
-          <article className="stat-card">
+          <article
+            className="stat-card"
+            aria-label={`Total tasks: ${statistics.total}`}
+          >
             <span className="stat-label">
               Total Tasks
             </span>
-            <strong>{tasks.length}</strong>
+            <strong>{statistics.total}</strong>
           </article>
 
-          <article className="stat-card">
+          <article
+            className="stat-card"
+            aria-label={`Completed tasks: ${statistics.completed}`}
+          >
             <span className="stat-label">
               Completed
             </span>
-            <strong>{completedTasks}</strong>
+            <strong>{statistics.completed}</strong>
           </article>
 
-          <article className="stat-card">
+          <article
+            className="stat-card"
+            aria-label={`Pending tasks: ${statistics.pending}`}
+          >
             <span className="stat-label">
               Pending
             </span>
-            <strong>{pendingTasks}</strong>
+            <strong>{statistics.pending}</strong>
           </article>
 
-          <article className="stat-card">
+          <article
+            className="stat-card"
+            aria-label={`Selected tasks: ${statistics.selected}`}
+          >
             <span className="stat-label">
               Selected
             </span>
-            <strong>{selectedTasks.length}</strong>
+            <strong>{statistics.selected}</strong>
           </article>
         </section>
 
-        <section className="tasks-section">
+        <section
+          className="tasks-section"
+          aria-label="Task management"
+        >
           <div className="section-header">
             <div>
               <h2>My Tasks</h2>
 
-              <p aria-live="polite">
-                {filteredTasks.length} task
-                {filteredTasks.length !== 1
-                  ? "s"
-                  : ""}{" "}
-                displayed
+              <p
+                className="task-count"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {taskCountMessage}
               </p>
             </div>
 
@@ -193,7 +214,12 @@ function App() {
               type="button"
               className="secondary-button"
               onClick={clearCompleted}
-              disabled={completedTasks === 0}
+              disabled={statistics.completed === 0}
+              aria-label={
+                statistics.completed === 0
+                  ? "No completed tasks to clear"
+                  : `Clear ${statistics.completed} completed tasks`
+              }
             >
               Clear completed
             </button>
@@ -213,6 +239,7 @@ function App() {
                   setSearch(event.target.value)
                 }
                 aria-label="Search tasks"
+                autoComplete="off"
               />
             </label>
 
@@ -228,25 +255,16 @@ function App() {
                 }
                 aria-label="Filter tasks by category"
               >
-                <option value="All">
-                  All categories
-                </option>
-
-                <option value="Networking">
-                  Networking
-                </option>
-
-                <option value="Programming">
-                  Programming
-                </option>
-
-                <option value="Database">
-                  Database
-                </option>
-
-                <option value="Design">
-                  Design
-                </option>
+                {CATEGORY_OPTIONS.map((option) => (
+                  <option
+                    key={option}
+                    value={option}
+                  >
+                    {option === "All"
+                      ? "All categories"
+                      : option}
+                  </option>
+                ))}
               </select>
             </label>
           </div>
