@@ -9,9 +9,18 @@ function TaskList({
 }) {
   if (tasks.length === 0) {
     return (
-      <div className="empty-state">
-        <div className="empty-icon">✓</div>
+      <div
+        className="empty-state"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <div className="empty-icon" aria-hidden="true">
+          ✓
+        </div>
+
         <h3>No tasks found</h3>
+
         <p>
           Try changing your search or category filter.
         </p>
@@ -20,7 +29,7 @@ function TaskList({
   }
 
   return (
-    <section
+    <div
       className="task-list"
       aria-label="Student tasks"
     >
@@ -34,7 +43,7 @@ function TaskList({
           onDelete={onDelete}
         />
       ))}
-    </section>
+    </div>
   );
 }
 
