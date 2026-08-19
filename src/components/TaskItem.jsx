@@ -50,7 +50,11 @@ function TaskItem({
         </div>
       </div>
 
-      <div className="task-actions" role="group">
+      <div
+        className="task-actions"
+        role="group"
+        aria-label={`Actions for ${task.title}`}
+      >
         <button
           type="button"
           className="complete-button"
