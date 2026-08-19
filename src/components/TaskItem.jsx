@@ -5,26 +5,21 @@ function TaskItem({
   onSelect,
   onDelete,
 }) {
-  const checkboxId = `select-${task.id}`;
+  const statusLabel = task.completed ? "Completed" : "Pending";
 
   return (
-   <article
-  className={`task-card ${task.completed ? "completed" : ""}`}
-  aria-label={`${task.title} - ${
-    task.completed ? "completed" : "pending"
-  }`}
->
+    <article
+      className={`task-card ${task.completed ? "completed" : ""}`}
+      aria-label={`${task.title} - ${statusLabel}`}
+    >
       <div className="task-check">
         <input
-          id={checkboxId}
+          id={`select-${task.id}`}
           type="checkbox"
           checked={selected}
           onChange={() => onSelect(task.id)}
+          aria-label={`Select ${task.title}`}
         />
-
-        <label htmlFor={checkboxId} className="sr-only">
-          Select {task.title}
-        </label>
       </div>
 
       <div className="task-main">
@@ -43,15 +38,19 @@ function TaskItem({
         <div className="task-meta">
           <span>Due: {task.dueDate}</span>
 
-          {task.completed && (
-            <span className="completed-label">
-              Completed
-            </span>
-          )}
+          <span
+            className="task-status"
+            aria-label={`Status: ${statusLabel}`}
+          >
+            {task.completed ? "Completed" : "Pending"}
+          </span>
         </div>
       </div>
 
-      <div className="task-actions">
+      <div
+        className="task-actions"
+        aria-label={`Actions for ${task.title}`}
+      >
         <button
           type="button"
           className="complete-button"
