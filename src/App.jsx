@@ -31,15 +31,16 @@ function App() {
         task.description.toLowerCase().includes(normalizedSearch);
 
       const matchesCategory =
-        category === "All" ||
-        task.category.toLowerCase() === category.toLowerCase();
+        category === "All" || task.category === category;
 
       return matchesSearch && matchesCategory;
     });
   }, [tasks, normalizedSearch, category]);
 
   const statistics = useMemo(() => {
-    const completed = tasks.filter((task) => task.completed).length;
+    const completed = tasks.filter(
+      (task) => task.completed
+    ).length;
 
     return {
       total: tasks.length,
@@ -65,7 +66,9 @@ function App() {
   function toggleSelection(taskId) {
     setSelectedTasks((currentSelected) => {
       if (currentSelected.includes(taskId)) {
-        return currentSelected.filter((id) => id !== taskId);
+        return currentSelected.filter(
+          (id) => id !== taskId
+        );
       }
 
       return [...currentSelected, taskId];
@@ -75,7 +78,7 @@ function App() {
   function addTask(newTask) {
     const task = {
       ...newTask,
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      id: Date.now(),
       completed: false,
     };
 
@@ -85,11 +88,15 @@ function App() {
 
   function deleteTask(taskId) {
     setTasks((currentTasks) =>
-      currentTasks.filter((task) => task.id !== taskId)
+      currentTasks.filter(
+        (task) => task.id !== taskId
+      )
     );
 
     setSelectedTasks((currentSelected) =>
-      currentSelected.filter((id) => id !== taskId)
+      currentSelected.filter(
+        (id) => id !== taskId
+      )
     );
   }
 
@@ -101,11 +108,15 @@ function App() {
     );
 
     setTasks((currentTasks) =>
-      currentTasks.filter((task) => !completedIds.has(task.id))
+      currentTasks.filter(
+        (task) => !completedIds.has(task.id)
+      )
     );
 
     setSelectedTasks((currentSelected) =>
-      currentSelected.filter((id) => !completedIds.has(id))
+      currentSelected.filter(
+        (id) => !completedIds.has(id)
+      )
     );
   }
 
@@ -189,19 +200,19 @@ function App() {
             <span className="stat-label">
               Selected
             </span>
-            <strong aria-live="polite">
-              {statistics.selected}
-            </strong>
+            <strong>{statistics.selected}</strong>
           </article>
         </section>
 
         <section
           className="tasks-section"
-          aria-label="Task management"
+          aria-labelledby="task-list-heading"
         >
           <div className="section-header">
             <div>
-              <h2>My Tasks</h2>
+              <h2 id="task-list-heading">
+                My Tasks
+              </h2>
 
               <p
                 className="task-count"
@@ -228,16 +239,12 @@ function App() {
           </div>
 
           <div className="filters">
-            <label
-              className="search-wrapper"
-              htmlFor="task-search"
-            >
+            <label className="search-wrapper">
               <span className="sr-only">
                 Search tasks
               </span>
 
               <input
-                id="task-search"
                 type="search"
                 placeholder="Search tasks..."
                 value={search}
@@ -249,13 +256,12 @@ function App() {
               />
             </label>
 
-            <label htmlFor="task-category">
+            <label>
               <span className="sr-only">
                 Filter by category
               </span>
 
               <select
-                id="task-category"
                 value={category}
                 onChange={(event) =>
                   setCategory(event.target.value)
