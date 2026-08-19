@@ -35,7 +35,9 @@ function TaskItem({
         </p>
 
         <div className="task-meta">
-          <span>Due: {task.dueDate}</span>
+          <span className="task-due-date">
+            Due: {task.dueDate}
+          </span>
 
           {task.completed && (
             <span
@@ -48,7 +50,7 @@ function TaskItem({
         </div>
       </div>
 
-      <div className="task-actions">
+      <div className="task-actions" role="group">
         <button
           type="button"
           className="complete-button"
