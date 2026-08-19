@@ -13,11 +13,8 @@ function TaskList({
         className="empty-state"
         role="status"
         aria-live="polite"
-        aria-atomic="true"
       >
-        <div className="empty-icon" aria-hidden="true">
-          ✓
-        </div>
+        <div className="empty-icon">✓</div>
 
         <h3>No tasks found</h3>
 
@@ -29,10 +26,7 @@ function TaskList({
   }
 
   return (
-    <div
-      className="task-list"
-      aria-label="Student tasks"
-    >
+    <div className="task-list">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
