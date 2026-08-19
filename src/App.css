@@ -645,3 +645,21 @@ nav {
     height: 65px;
   }
 }
+
+/* Task metadata and accessibility enhancements */
+.task-description {
+  margin-bottom: 0.5rem;
+}
+
+.task-due-date {
+  font-weight: 500;
+}
+
+.task-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.empty-state[role="status"] {
+  text-align: center;
+}
